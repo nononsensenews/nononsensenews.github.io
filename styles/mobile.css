@@ -1,0 +1,28 @@
+body {
+  text-align: center;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+.article {
+	height: 180px;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	margin-bottom: 20px;
+}
+
+.article-inner {
+	color: white;
+	background-color: rgba(0,0,0,0.5); 
+	text-align: left;
+	font-size: 10px;
+	width: 98%;
+	padding: 1%;
+}
