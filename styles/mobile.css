@@ -26,3 +26,7 @@ button:hover {
 	width: 98%;
 	padding: 1%;
 }
+
+#blocked-words {
+	display: none;
+}

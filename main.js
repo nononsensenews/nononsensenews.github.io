@@ -4,6 +4,8 @@ if (localStorage.getItem("blocked_words"))
 	blocked_words = JSON.parse(localStorage.getItem("blocked_words"));
 
 var bws = document.getElementById("blocked-words");
+if (blocked_words.length != 0)
+	bws.style.display = "block";
 for (var i = 0; i < blocked_words.length; i++) {
 	bws.insertAdjacentHTML('beforeend', `<button id="bw-btn-${blocked_words[i]}" onclick="remove('${blocked_words[i]}')">'${blocked_words[i]}'</button> `);
 }
@@ -24,6 +26,7 @@ document.getElementById("block-btn").addEventListener('click', function() {
  	blocked_words.push(document.getElementById("block-input").value);
  	localStorage.setItem("blocked_words", JSON.stringify(blocked_words));
  	var bws = document.getElementById("blocked-words");
+ 	bws.style.display = "block";
 	bws.insertAdjacentHTML('beforeend', `<button id="bw-btn-${value}" onclick="remove('${value}')">'${value}'</button> `);
 	document.getElementById("block-input").value = "";
 	get_news();
@@ -38,6 +41,8 @@ function remove(value) {
 	    }
     }
 	localStorage.setItem("blocked_words", JSON.stringify(blocked_words));
+	if (blocked_words.length == 0)
+		document.getElementById("blocked-words").style.display = "none";
 	get_news();
 }
 
@@ -52,9 +57,14 @@ function show_article(item, index) {
 	var search_desc = "";
 	if (item.description)
 		var search_desc = item.description.replace(/[^\w\s]/gi, ' ').toLowerCase();
-	for (var i = 0; i < blocked_words.length; i++)
-		if (search_title.split(" ").includes(blocked_words[i].toLowerCase()) || search_desc.split(" ").includes(blocked_words[i].toLowerCase()))
+	for (var i = 0; i < blocked_words.length; i++) {
+		var words_found = 0;
+		for (var j = 0; j < blocked_words[i].split(" ").length; j++)
+			if (search_title.split(" ").includes(blocked_words[i].split(" ")[j].toLowerCase()) || search_desc.split(" ").includes(blocked_words[i].split(" ")[j].toLowerCase()))
+				words_found++;
+		if (words_found == blocked_words[i].split(" ").length)
 			return;
+	}
 
 	var container = document.getElementById('news-container');
 	container.insertAdjacentHTML('beforeend', `<div id="article-${index}" class="article"></div>`);
@@ -64,7 +74,8 @@ function show_article(item, index) {
 	var article_inner = document.getElementById(`article-inner-${index}`);
 	
 	article_inner.insertAdjacentHTML('beforeend', `<a href="${item.url}" target="_blank"><h2>${title}</h2></a>`);
-	article_inner.insertAdjacentHTML('beforeend', `<h3>${item.description}</h3>`);
+	if (item.description)
+		article_inner.insertAdjacentHTML('beforeend', `<h3>${item.description}</h3>`);
 	article_inner.insertAdjacentHTML('beforeend', `<h5>${source}</h5>`);
 }
 
