@@ -10,14 +10,14 @@ for (var i = 0; i < blocked_words.length; i++) {
 	bws.insertAdjacentHTML('beforeend', `<button id="bw-btn-${blocked_words[i]}" onclick="remove('${blocked_words[i]}')">'${blocked_words[i]}'</button> `);
 }
 
+window.onload = get_news;
+
 document.getElementById("block-input").addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {
     event.preventDefault();
     document.getElementById("block-btn").click();
   }
 });
-
-window.onload = get_news;
 
 document.getElementById("block-btn").addEventListener('click', function() {
 	var value = document.getElementById("block-input").value;
