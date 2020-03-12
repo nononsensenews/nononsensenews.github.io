@@ -48,7 +48,10 @@ function show_article(item, index) {
 	var source = t_arr[t_arr.length-1];
 
 	var search_title = title.replace(/[^\w\s]/gi, ' ').toLowerCase();
-	var search_desc = item.description.replace(/[^\w\s]/gi, ' ').toLowerCase();
+
+	var search_desc = "";
+	if (item.description)
+		var search_desc = item.description.replace(/[^\w\s]/gi, ' ').toLowerCase();
 	for (var i = 0; i < blocked_words.length; i++)
 		if (search_title.split(" ").includes(blocked_words[i].toLowerCase()) || search_desc.split(" ").includes(blocked_words[i].toLowerCase()))
 			return;
@@ -72,7 +75,7 @@ function get_news() {
 
 	var api_key = "c4c94903673e42b98955225991fa5c90";
 	var request = new XMLHttpRequest();
-	var url = `http://newsapi.org/v2/top-headlines?country=us&apiKey=${api_key}`;
+	var url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api_key}`;
 	request.open('GET', url, true);
 	request.onload = function() {
 		var data = JSON.parse(this.response);
